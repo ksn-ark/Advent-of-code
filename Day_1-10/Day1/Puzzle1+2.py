@@ -4,7 +4,7 @@ stringNumbers = ["0","1","2","3","4","5","6","7","8","9"]
 
 stringNumbersSpelled = ["zero","one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-f = open("C:\Files\Github\Repositories\Advent-of-code\Day 1-10\Puzzle1Dataset.txt", "r");
+f = open("C:\Files\Github\Repositories\Advent-of-code\Day 1-10\Day1\Day1Dataset1.txt", "r");
 
 input = f.read()
 
