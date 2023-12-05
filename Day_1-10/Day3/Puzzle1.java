@@ -12,12 +12,16 @@ public class Puzzle1 {
         int partNumberSum = 0;
 
         for (int i = 0; i < rawDataArray.length; i++) {
+
             String[] lineArray = rawDataArray[i].split("");
+
             for (int j = 0; j < lineArray.length; j++) {
                 if (strisDigit(lineArray[j])) {
 
                     int numLength = 0;
                     String num = "";
+
+                    // adds digits together as string to make the full number
                     while (strisDigit(lineArray[j + numLength]) == true) {
                         num += lineArray[j + numLength];
                         numLength += 1;
@@ -26,21 +30,29 @@ public class Puzzle1 {
                         }
                     }
 
-                    for (int k = i - 1; k < i + 2; k++) {
-                        for (int l = j - 1; l < j + numLength + 1; l++) {
+                    for (int k = i - 1; k < i + 2; k++) { // loops through the row above, of and below the number
+
+                        for (int l = j - 1; l < j + numLength + 1; l++) { // loops through the columns before the first
+                                                                          // digit's column, above each digit's column,
+                                                                          // and after the last digit's column
                             try {
-                                if (rawDataArray[k].split("")[l].equals(".") == false
-                                        && strisDigit(rawDataArray[k].split("")[l]) == false) {
-                                    partNumberSum += Integer.parseInt(num);
+                                if (rawDataArray[k].split("")[l].equals(".") == false // checks if not a dot
+                                        && strisDigit(rawDataArray[k].split("")[l]) == false) { // checks its not
+                                                                                                // another number
+                                    partNumberSum += Integer.parseInt(num); // adds the number as a valid part number
                                 }
-                            } catch (ArrayIndexOutOfBoundsException e) {
+                            } catch (ArrayIndexOutOfBoundsException e) { // for when it's trying to check invalid
+                                                                         // rows/columns
                                 continue;
                             }
 
                         }
                     }
 
-                    j += numLength;
+                    j += numLength; // j is the column, since the number has already been processed, number of
+                                    // digits is added to the column so it picks off from the column right after the
+                                    // number (I suspect it may be starting from the one after that, but is
+                                    // irrelevant here as adjacent numbers are not a thing)
                 }
             }
         }
