@@ -22,10 +22,11 @@ public class Puzzle1 {
                     String num = "";
 
                     // adds digits together as string to make the full number
-                    while (strisDigit(lineArray[j + numLength]) == true) {
-                        num += lineArray[j + numLength];
+
+                    while (strisDigit(lineArray[j + numLength]) == true) { // checks the next item in the row is a digit
+                        num += lineArray[j + numLength]; // adds the digit to the number
                         numLength += 1;
-                        if (j + numLength == lineArray.length) {
+                        if (j + numLength == lineArray.length) { // breaks the loop if we have hit the end of a line
                             break;
                         }
                     }
@@ -60,7 +61,8 @@ public class Puzzle1 {
         System.out.println(partNumberSum);
     }
 
-    public static String[] readFile(String filePath) {
+    public static String[] readFile(String filePath) { // helper funciton to read a text file and return an array of
+                                                       // data by splitting it for every \n
 
         String rawData = "";
 
@@ -86,7 +88,7 @@ public class Puzzle1 {
         }
     }
 
-    public static boolean strisDigit(String str) {
+    public static boolean strisDigit(String str) { // helper function to check if a string is a digit
         try {
             int a = Integer.parseInt(str);
             if (a == 0) {
