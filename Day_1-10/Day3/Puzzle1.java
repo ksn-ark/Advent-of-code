@@ -61,8 +61,7 @@ public class Puzzle1 {
         System.out.println(partNumberSum);
     }
 
-    public static String[] readFile(String filePath) { // helper funciton to read a text file and return an array of
-                                                       // data by splitting it for every \n
+    public static String[] readFile(String filePath) { // helper funciton, reads file, returns array of lines
 
         String rawData = "";
 
