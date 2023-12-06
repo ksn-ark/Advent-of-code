@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "lib": ["ES2015", "dom"],
+      "strict": true
+    },
+    "include": ["src/Puzzle2.ts"],
+    "exclude": ["node_modules"]
+  }
+  
