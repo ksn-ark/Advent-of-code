@@ -4,28 +4,28 @@ const main = async (): Promise<void> => {
   const cards = inputHandler(input);
   const totalScratchCards: number = totalCardsCalculator(cards);
   console.log(totalScratchCards);
-  console.log(cards)
 };
 
 const totalCardsCalculator = (cards: Card[]): number => {
-  let totalScratchCards = 0;
-  cards.map((card) => {
+  cards.forEach((card) => {
     let matchingNumbers = 0;
     card.winningNumbers.forEach((winningNumber: number) => {
       if (card.cardNumbers.has(winningNumber)) {
         matchingNumbers += 1;
       }
     });
-    cards.map(incard => {
-      if (card.id < incard.id && incard.id <= card.id+matchingNumbers) {
-        incard.cardCount+=card.cardCount
-      } else {
-        return;
+
+    cards.map((duplicateCard) => {
+      if (
+        card.id < duplicateCard.id &&
+        duplicateCard.id <= card.id + matchingNumbers
+      ) {
+        duplicateCard.cardCount += card.cardCount;
       }
-    })
+    });
   });
-  cards.map((card) => (totalScratchCards += card.cardCount));
-  return totalScratchCards;
+
+  return cards.reduce((cardSum, cardNum) => cardSum + cardNum.cardCount, 0);
 };
 
 const fetchInput = async (filePath: string): Promise<string> => {
@@ -42,8 +42,8 @@ const inputHandler = (inputCards: string): Card[] => {
 
 class Card {
   id: number;
-  winningNumbers: Set<any>;
-  cardNumbers: Set<any>;
+  winningNumbers: Set<number>;
+  cardNumbers: Set<number>;
   cardCount: number;
 
   constructor(rawCard: string) {
@@ -66,8 +66,8 @@ class Card {
 
 interface Card {
   id: number;
-  winningNumbers: Set<any>;
-  cardNumbers: Set<any>;
+  winningNumbers: Set<number>;
+  cardNumbers: Set<number>;
 }
 
 main();
