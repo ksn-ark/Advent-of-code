@@ -1,7 +1,7 @@
 const main = async (): Promise<void> => {
   const filePath = "./PuzzleInput.txt";
   const input = await fetchInput(filePath);
-  const cards = await inputHandler(input);
+  const cards = inputHandler(input);
   const totalPoints: number = pointCalculator(cards);
   console.log(totalPoints);
 };

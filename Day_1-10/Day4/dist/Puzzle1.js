@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const filePath = "./PuzzleInput.txt";
     const input = yield fetchInput(filePath);
-    const cards = yield inputHandler(input);
+    const cards = inputHandler(input);
     const totalPoints = pointCalculator(cards);
     console.log(totalPoints);
 });
