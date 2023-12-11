@@ -21,6 +21,7 @@ long long lowestValue(long long *NumberArray, int arrayLength);
 
 long long dataSections = 8;
 long long mapSections = 3;
+long long locationSection = 7;
 
 void main()
 {
@@ -42,7 +43,7 @@ void main()
 
     for (int seed = 0; seed < seedCount; seed++)
     {
-        locationArray[seed] = seedsData[seed][7];
+        locationArray[seed] = seedsData[seed][locationSection];
     }
 
     long long lowestLocation = lowestValue(locationArray, seedCount);
