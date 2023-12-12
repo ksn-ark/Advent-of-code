@@ -83,8 +83,6 @@ long long mapToSection(long long **maps, long long valueToMap)
         if (maps[map][1] <= valueToMap && valueToMap <= ((maps[map][1] + maps[map][2]) - 1))
         {
             mappedValue = valueToMap + (maps[map][0] - maps[map][1]);
-
-            // printf("mapped value %lld valueToMap %lld map start %lld map end %lld \nmap length %lld map start - end %lld \n", mappedValue, valueToMap, maps[map][0], maps[map][1], maps[map][2], (maps[map][0] - maps[map][1]));
             break;
         }
     }

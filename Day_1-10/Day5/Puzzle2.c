@@ -5,14 +5,15 @@
 #include <stdbool.h>
 
 char *readFile(char *filePath);
-long long *extractSeeds(char *seedSection);
-int countSeeds(long long *seeds);
+
+long long **extractSeeds(char *seedSection);
+int countSeeds(long long **seeds);
 
 long long ***extractData(char **sections);
 long long **extractSection(char *sectionDataBuffer);
 
-long long **constructSeedsData(long long *seeds, long long ***data, int seedCount);
-long long mapToSection(long long **maps, long long valueToMap);
+long long ***constructSeedsData(long long **seeds, long long ***data, int seedCount);
+long long *mapToSection(long long **maps, long long *valueToMap);
 
 char *cleanInput(char *inputTemp);
 char *tokenizeInput(char *input);
@@ -31,37 +32,37 @@ void main()
 
     char **sections = splitIntoSections(input);
 
-    long long *seeds = extractSeeds(sections[0]);
+    long long **seeds = extractSeeds(sections[0]);
 
     const int seedCount = countSeeds(seeds);
 
     long long ***data = extractData(sections);
 
-    long long **seedsData = constructSeedsData(seeds, data, seedCount);
+    long long ***seedsData = constructSeedsData(seeds, data, seedCount);
 
     long long *locationArray = (long long *)malloc(seedCount * sizeof(long long));
 
-    for (int seed = 0; seed < seedCount; seed++)
+    /*for (int seed = 0; seed < seedCount; seed++)
     {
         locationArray[seed] = seedsData[seed][locationSection];
     }
 
     long long lowestLocation = lowestValue(locationArray, seedCount);
 
-    printf("lowest %lld", lowestLocation);
+    printf("lowest %lld", lowestLocation);*/
 
     free(input);
 }
 
-long long **constructSeedsData(long long *seeds, long long ***data, int seedCount)
+long long ***constructSeedsData(long long **seedRanges, long long ***data, int seedCount)
 {
-    long long **seedsData = (long long **)malloc(seedCount * sizeof(long long *));
+    long long ****seedsData = (long long ***)malloc(seedCount * sizeof(long long **));
 
     for (long long seed = 0; seed < seedCount; seed++)
     {
-        long long *seedData = (long long *)malloc(dataSections * sizeof(long long));
+        long long **seedData = (long long **)malloc(dataSections * sizeof(long long *));
 
-        seedData[0] = seeds[seed];
+        seedData[0] = seedRanges[seed];
 
         for (long long section = 1; section < dataSections; section++)
         {
@@ -74,17 +75,18 @@ long long **constructSeedsData(long long *seeds, long long ***data, int seedCoun
     return seedsData;
 }
 
-long long mapToSection(long long **maps, long long valueToMap)
+long long *mapToSection(long long **maps, long long *valueToMap)
 {
-    long long mappedValue = valueToMap;
+    long long *mappedValue = valueToMap;
 
     for (int map = 0; maps[map][0] != -1; map++)
     {
-        if (maps[map][1] <= valueToMap && valueToMap <= ((maps[map][1] + maps[map][2]) - 1))
+        if (maps[map][1] <= valueToMap[0] + valueToMap[1] && valueToMap[0] <= ((maps[map][1] + maps[map][2]) - 1))
         {
-            mappedValue = valueToMap + (maps[map][0] - maps[map][1]);
-
-            // printf("mapped value %lld valueToMap %lld map start %lld map end %lld \nmap length %lld map start - end %lld \n", mappedValue, valueToMap, maps[map][0], maps[map][1], maps[map][2], (maps[map][0] - maps[map][1]));
+            if (maps[map][1] <= valueToMap[0])
+            {
+                continue;
+            }
             break;
         }
     }
@@ -92,33 +94,43 @@ long long mapToSection(long long **maps, long long valueToMap)
     return mappedValue;
 }
 
-long long *extractSeeds(char *seedSection)
+long long **extractSeeds(char *seedSection)
 {
 
     char *token = strtok(seedSection, ":");
     char *seedsBuffer = strtok(NULL, ":");
-    long long *seeds = (long long *)malloc(strlen(seedsBuffer) * sizeof(long long));
+    long long **seeds = (long long **)malloc((strlen(seedsBuffer) + 10) * sizeof(long long *));
 
-    char *seed = strtok(seedsBuffer, " ");
+    char *seedBuffer = strtok(seedsBuffer, " ");
 
     long long i = 0;
 
-    while (seed != NULL)
+    while (seedBuffer != NULL)
     {
-        seeds[i] = strtoull(seed, NULL, 10);
-        seed = strtok(NULL, " ");
+        long long *seed = (long long *)malloc(2 * sizeof(long long));
+
+        seed[0] = strtoull(seedBuffer, NULL, 10);
+        seedBuffer = strtok(NULL, " ");
+        seed[1] = strtoull(seedBuffer, NULL, 10);
+        seedBuffer = strtok(NULL, " ");
+        seeds[i] = seed;
         i++;
     }
 
-    seeds[i] = -1;
+    long long *endSeed = (long long *)malloc(2 * sizeof(long long));
+
+    endSeed[0] = -1;
+    endSeed[1] = 0;
+
+    seeds[i] = endSeed;
 
     return seeds;
 }
 
-int countSeeds(long long *seeds)
+int countSeeds(long long **seeds)
 {
     int seedCount = 0;
-    for (int i = 0; seeds[i] != -1; i++)
+    for (int i = 0; seeds[i][0] != -1; i++)
     {
         seedCount++;
     }
